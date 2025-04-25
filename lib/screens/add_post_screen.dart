@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:blogapp/components/round_button.dart';
+import 'package:blogapp/services/config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -33,7 +34,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Future getImageCamera() async{
     final pickedFile =await picker.pickImage(source: ImageSource.camera);
     if(pickedFile != null){
-      _image = File(pickedFile.path);
+      setState(() {
+        _image = File(pickedFile.path);
+
+      });
     }else{
       print("No image is picked");
     }
@@ -41,7 +45,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Future getImageGallery() async{
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if(pickedFile != null){
-      _image = File(pickedFile.path);
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }else{
       print("No image is picked");
     }
@@ -98,7 +104,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             children: [
               InkWell(
                 onTap: (){
-                  dialog(context);
+                  setState(() {
+                    dialog(context);
+
+                  });
                 },
                 child: Container(
                   child:
@@ -106,8 +115,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           ? ClipRect(
                             child: Image.file(
                               _image!.absolute,
-                              width: 100,
-                              height: 100,
+                              width: 300,
+                              height: 150,
                               fit: BoxFit.fitWidth,
                             ),
                           )
@@ -165,10 +174,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ),
                   SizedBox(height: 20,),
                   RoundButton(title: "Upload Post", onPress: () async {
-                    if (_image == null) {
-                      toastMessage("Please select an image first.");
-                      return;
-                    }
+                    // if (_image == null) {
+                    //   toastMessage("Please select an image first.");
+                    //   return;
+                    // }
 
                     setState(() {
                       showSpinner = true;
@@ -176,20 +185,22 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
                     try {
                       int date = DateTime.now().microsecondsSinceEpoch;
-                      firebase_storage.Reference ref = firebase_storage.FirebaseStorage
-                          .instance
-                          .ref('blogapp/$date.jpg');
 
-                      UploadTask uploadTask = ref.putFile(_image!.absolute);
-                      TaskSnapshot snapshot = await uploadTask;
+                      // firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref('blogapp/$date.jpg');
+                      // UploadTask uploadTask = ref.putFile(_image!.absolute);
+                      // TaskSnapshot snapshot = await uploadTask;
+                      // if (snapshot.state == TaskState.success) {
+                      //   var newUrl = await snapshot.ref.getDownloadURL();
 
-                      if (snapshot.state == TaskState.success) {
-                        var newUrl = await snapshot.ref.getDownloadURL();
 
+                        if (_image != null && _image!.existsSync()){
+                          String? imageUrl = await uploadImage(_image!);
+
+                          print('Image uploaded successfully: $imageUrl');
                         final User? user = _auth.currentUser;
                         postRef.child("Post List").child(date.toString()).set({
                           "pId": date.toString(),
-                          "pImage": newUrl.toString(),
+                          "pImage": imageUrl ?? " ",
                           "pTime": date.toString(),
                           "pTitle": titleController.text.toString(),
                           "pDescription": descriptionController.text.toString(),
