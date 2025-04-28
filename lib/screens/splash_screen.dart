@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:blogapp/screens/home_screen.dart';
+import 'package:blogapp/screens/main_screen.dart';
 import 'package:blogapp/screens/option_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final user = auth.currentUser;
     if(user !=  null){
       Timer(Duration(seconds: 3), 
-              ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=> HomeScreen()))
+              ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> MainScreen()))
       );
     }
     else{

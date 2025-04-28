@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:blogapp/components/round_button.dart';
 import 'package:blogapp/services/config.dart';
+import 'package:blogapp/services/config_cloudinary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -194,7 +195,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
 
                         if (_image != null && _image!.existsSync()){
-                          String? imageUrl = await uploadImage(_image!);
+                          String? imageUrl = await uploadImageCloudinary(_image!);
+                          //String fixedImageUrl = imageUrl!.replaceAll('.com', '');
 
                           print('Image uploaded successfully: $imageUrl');
                         final User? user = _auth.currentUser;
