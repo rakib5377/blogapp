@@ -28,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: screens.elementAt(_currentIndex),
       bottomNavigationBar: CurvedNavigationBar(
-        buttonBackgroundColor: Colors.black,
+        buttonBackgroundColor: Colors.white,
         height: 45,
         color: Colors.grey,
         animationDuration: Duration(milliseconds: 250),

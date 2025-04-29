@@ -1,5 +1,8 @@
 import 'package:blogapp/components/round_button.dart';
+import 'package:blogapp/screens/forgot_password.dart';
 import 'package:blogapp/screens/home_screen.dart';
+import 'package:blogapp/screens/main_screen.dart';
+import 'package:blogapp/screens/signin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Form(
                 key: _formkey,
@@ -89,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             print("Success");
                             toastMessage("User Logged in Successfully");
                             Navigator.push(
-                                context, MaterialPageRoute(builder: (_)=>HomeScreen()));
+                                context, MaterialPageRoute(builder: (_)=>MainScreen()));
                           }
                         }catch(e){
                           setState(() {
@@ -99,7 +103,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           toastMessage(e.toString());
                         }
                       }
-                    }, borderSize: 10.0)
+                    }, borderSize: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>ForgotPassword()));
+                        }
+                      ,child: Text("Forgot Password?",style: TextStyle(color: Colors.blue,fontSize: 16,),)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 1),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>SignIn()));
+                        }
+                      ,child: Text("Register new account",style: TextStyle(color: Colors.blue,fontSize: 16,),)),
+                    ),
                   ],
                 ),
               ),

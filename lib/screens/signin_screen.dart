@@ -1,4 +1,6 @@
 import 'package:blogapp/components/round_button.dart';
+import 'package:blogapp/screens/home_screen.dart';
+import 'package:blogapp/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +85,7 @@ class _SignInState extends State<SignIn> {
                             final user = await _auth.createUserWithEmailAndPassword(
                                 email: email.toString().trim(),
                                 password: password.toString().trim());
+                            Navigator.push(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
                             if(user != null){
                               setState(() {
                                 showSpinner = false;
@@ -98,7 +101,22 @@ class _SignInState extends State<SignIn> {
                             });
                           }
                         }
-                      }, borderSize: 10.0,)
+                      }, borderSize: 10.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 18.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Already have an account? ",style: TextStyle(fontSize: 16)),
+                            InkWell(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
+                                },
+                                child: Text("Sign in",style: TextStyle(color: Colors.blue,fontSize: 18),))
+
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )
